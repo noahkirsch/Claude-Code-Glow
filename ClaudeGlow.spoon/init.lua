@@ -27,9 +27,25 @@ obj.color     = { red = 1.0, green = 0.45, blue = 0.0 }
 obj.thickness = 42
 obj.layers    = 24
 
+obj.terminalBundleIDs = {
+  ["com.apple.Terminal"]              = true,
+  ["com.googlecode.iterm2"]           = true,
+  ["com.mitchellh.ghostty"]           = true,
+  ["org.alacritty"]                   = true,
+  ["dev.warp.Warp-Stable"]            = true,
+  ["net.kovidgoyal.kitty"]            = true,
+  ["com.github.wez.wezterm"]          = true,
+  ["co.zeit.hyper"]                   = true,
+  ["org.tabby"]                       = true,
+  ["com.microsoft.VSCode"]            = true,
+  ["com.microsoft.VSCodeInsiders"]    = true,
+  ["com.todesktop.230313mzl4w4u92"]   = true,
+}
+
 obj._canvases      = {}
 obj._visible       = false
 obj._screenWatcher = nil
+obj._appWatcher    = nil
 
 function obj:_build()
   for _, c in ipairs(self._canvases) do c:delete() end
@@ -73,14 +89,33 @@ function obj:_build()
   end
 end
 
+function obj:_startAppWatcher()
+  if self._appWatcher then return end
+  self._appWatcher = hs.application.watcher.new(function(_, event, app)
+    if event == hs.application.watcher.activated and app then
+      local bid = app:bundleID()
+      if bid and self.terminalBundleIDs[bid] then self:hide() end
+    end
+  end):start()
+end
+
+function obj:_stopAppWatcher()
+  if self._appWatcher then
+    self._appWatcher:stop()
+    self._appWatcher = nil
+  end
+end
+
 function obj:show()
   self._visible = true
   for _, c in ipairs(self._canvases) do c:show() end
+  self:_startAppWatcher()
 end
 
 function obj:hide()
   self._visible = false
   for _, c in ipairs(self._canvases) do c:hide() end
+  self:_stopAppWatcher()
 end
 
 function obj:start()
@@ -103,6 +138,7 @@ function obj:stop()
     self._screenWatcher:stop()
     self._screenWatcher = nil
   end
+  self:_stopAppWatcher()
   for _, c in ipairs(self._canvases) do c:delete() end
   self._canvases = {}
   self._visible  = false

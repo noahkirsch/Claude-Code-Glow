@@ -2,7 +2,7 @@
 
 An ambient screen-border glow that tells you when Claude Code is waiting on you.
 
-The edges of your screen glow soft orange whenever Claude Code is blocked on your input — a finished turn, a permission prompt, an `AskUserQuestion`, or an MCP elicitation dialog. The glow clears the moment you unblock it. No notifications, no dock bouncing, no context switch — just a peripheral-vision signal so you can work in another window and know the instant Claude needs you.
+The edges of your screen glow soft orange whenever Claude Code is blocked on your input — a finished turn, a permission prompt, an `AskUserQuestion`, or an MCP elicitation dialog. The glow clears the moment you unblock it — either by taking an action in the terminal, or simply by focusing a terminal window (so you can acknowledge the signal without losing context at the end of the day). No notifications, no dock bouncing, no context switch — just a peripheral-vision signal so you can work in another window and know the instant Claude needs you.
 
 <img width="800" height="517" alt="OrangeGlowGif-ezgif com-video-to-gif-converter" src="https://github.com/user-attachments/assets/b812684d-87a1-4998-8c5e-174ebda69297" />
 
@@ -59,6 +59,7 @@ Claude Code has several hooks that *sound* like "user needs to do something" but
 | `UserPromptSubmit`                | off  | You sent a prompt — Claude is working again                |
 | `PostToolUse`                     | off  | A tool finished — covers the "you approved a permission" case, since no hook fires at the approve-click moment |
 | `SessionEnd`                      | off  | Session closed                                             |
+| _focus change to a terminal app_  | off  | You came back to a terminal window — signal acknowledged, no typing required |
 
 Notable exclusions:
 
@@ -78,6 +79,31 @@ spoon.ClaudeGlow:start()
 ```
 
 Defaults: `{ red = 1.0, green = 0.45, blue = 0.0 }` (orange), `thickness = 42`, `layers = 24`.
+
+### Which apps count as "a terminal"
+
+Focusing any of these clears the glow. To add, remove, or replace entries, set `spoon.ClaudeGlow.terminalBundleIDs` before `:start()`:
+
+```lua
+spoon.ClaudeGlow.terminalBundleIDs = {
+  ["com.apple.Terminal"]              = true,
+  ["com.googlecode.iterm2"]           = true,
+  ["com.mitchellh.ghostty"]           = true,
+  ["org.alacritty"]                   = true,
+  ["dev.warp.Warp-Stable"]            = true,
+  ["net.kovidgoyal.kitty"]            = true,
+  ["com.github.wez.wezterm"]          = true,
+  ["co.zeit.hyper"]                   = true,
+  ["org.tabby"]                       = true,
+  ["com.microsoft.VSCode"]            = true,  -- includes integrated terminal
+  ["com.microsoft.VSCodeInsiders"]    = true,
+  ["com.todesktop.230313mzl4w4u92"]   = true,  -- Cursor
+}
+```
+
+To find an app's bundle ID: `osascript -e 'id of app "Ghostty"'`.
+
+Note: Hammerspoon matches at the app level, so for editors-with-terminals (VS Code, Cursor) the glow clears whenever the app becomes frontmost, regardless of whether the terminal pane or the editor pane has focus. If that's too aggressive, drop those IDs from your config.
 
 ## Troubleshooting
 
