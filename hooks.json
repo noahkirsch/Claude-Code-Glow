@@ -5,7 +5,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "open \"hammerspoon://claudeglowon\"",
+            "command": "open -g \"hammerspoon://claudeglowon\"",
             "async": true
           }
         ]
@@ -17,7 +17,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "open \"hammerspoon://claudeglowon\"",
+            "command": "open -g \"hammerspoon://claudeglowon\"",
             "async": true
           }
         ]
@@ -29,7 +29,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "open \"hammerspoon://claudeglowon\"",
+            "command": "open -g \"hammerspoon://claudeglowon\"",
             "async": true
           }
         ]
@@ -40,7 +40,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "open \"hammerspoon://claudeglowoff\"",
+            "command": "open -g \"hammerspoon://claudeglowoff\"",
             "async": true
           }
         ]
@@ -51,7 +51,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "open \"hammerspoon://claudeglowoff\"",
+            "command": "open -g \"hammerspoon://claudeglowoff\"",
             "async": true
           }
         ]
@@ -62,7 +62,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "open \"hammerspoon://claudeglowoff\"",
+            "command": "open -g \"hammerspoon://claudeglowoff\"",
             "async": true
           }
         ]
