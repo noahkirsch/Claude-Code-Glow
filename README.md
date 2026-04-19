@@ -4,6 +4,9 @@ An ambient screen-border glow that tells you when Claude Code is waiting on you.
 
 The edges of your screen glow soft orange whenever Claude Code is blocked on your input — a finished turn, a permission prompt, an `AskUserQuestion`, or an MCP elicitation dialog. The glow clears the moment you unblock it. No notifications, no dock bouncing, no context switch — just a peripheral-vision signal so you can work in another window and know the instant Claude needs you.
 
+<img width="800" height="517" alt="OrangeGlowGif-ezgif com-video-to-gif-converter" src="https://github.com/user-attachments/assets/b812684d-87a1-4998-8c5e-174ebda69297" />
+
+
 ## Requirements
 
 - macOS
